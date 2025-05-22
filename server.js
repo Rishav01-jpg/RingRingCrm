@@ -12,7 +12,10 @@ require('dotenv').config();
 
 const app = express();
 const cors = require('cors');
-app.use(cors());
+app.use(cors({
+  origin: 'https://ring-ring-1.onrender.com', // your frontend URL
+  credentials: true
+}));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
