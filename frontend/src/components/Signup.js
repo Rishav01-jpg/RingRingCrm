@@ -27,7 +27,7 @@ function Signup() {
     setMessage('');
 
     try {
-      const res = await axios.post('https://ring-ring-eq46.onrender.com', formData);
+      const res = await axios.post('https://ring-ring-eq46.onrender.com/api/auth/signup', formData);
       setMessage('Signup successful! You can now log in.');
       setFormData({ name: '', email: '', password: '' });
     } catch (err) {
