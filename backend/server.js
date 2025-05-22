@@ -1,7 +1,6 @@
 // Import necessary libraries
 const express = require('express');
 const mongoose = require('mongoose');
-const path = require('path');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
 const leadRoutes = require('./routes/leadRoutes');
@@ -26,14 +25,6 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/scheduled-calls', scheduledCallRoutes);
 app.use('/api/call-history', callHistoryRoutes);
 
-// Serve React static files
-app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-// Catch-all route to send React's index.html for any unknown routes
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
-});
-
 // Database connection (using the MONGO_URI from .env)
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
@@ -42,7 +33,12 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => {
     console.error('MongoDB connection error:', err);
   });
-  
+
+// Basic route for testing
+app.get('/', (req, res) => {
+  res.send('Hello, Rishav Mishra CRM!');
+});
+
 // Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
