@@ -24,7 +24,30 @@ export const AuthProvider = ({ children }) => {
       throw err;
     }
   };
-
+  const signup = async (name, email, password) => {
+    try {
+      const response = await axios.post(`${config.API_URL}/api/auth/signup`, {
+        name,
+        email,
+        password,
+      });
+  
+      if (response.data.token) {
+        // Optional: Auto-login after signup
+        const profile = await axios.get(`${config.API_URL}/api/users/profile`, {
+          headers: { Authorization: `Bearer ${response.data.token}` },
+        });
+  
+        localStorage.setItem('token', response.data.token);
+        setUser(profile.data);
+      }
+  
+      return response.data;
+    } catch (err) {
+      throw err;
+    }
+  };
+  
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
