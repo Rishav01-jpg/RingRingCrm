@@ -80,7 +80,9 @@ export const AuthProvider = ({ children }) => {
       user,
       loading,
       login,
-      logout
+      logout,
+      signup
+      
     }}>
       {children}
     </AuthContext.Provider>
