@@ -15,7 +15,6 @@ const app = express();
 const cors = require('cors');
 app.use(cors());
 
-
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use('/api/users', userRoutes);
@@ -38,12 +37,11 @@ mongoose.connect(process.env.MONGO_URI)
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
-  app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
   }); 
-   
 } else {
   // Basic route for testing in development
   app.get('/', (req, res) => {
