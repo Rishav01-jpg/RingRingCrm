@@ -9,4 +9,4 @@ node_modules/
 
 # Ignore build folders (if any)
 dist/
-build/
+
