@@ -20,7 +20,7 @@ function UserProfile() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('https://ring-ring-eq46.onrender.com', {
+        const res = await axios.get('https://ring-ring-eq46.onrender.com/api/users/profile', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setProfile(res.data);
