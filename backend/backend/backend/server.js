@@ -38,12 +38,12 @@ mongoose.connect(process.env.MONGO_URI)
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
-  app.use(express.static(path.join(__dirname, '../client/build')));
+  app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
-  // Any routes not caught by API routes will serve the index.html
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-  });
+    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+  });  
+  
 } else {
   // Basic route for testing in development
   app.get('/', (req, res) => {
