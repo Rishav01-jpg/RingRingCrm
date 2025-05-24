@@ -21,16 +21,6 @@ router.post('/', authMiddleware, async (req, res) => {
         });
 
         const saved = await newCallHistory.save();
-             
-        // Update lead status from 'new' to 'contacted' if applicable
-        if (outcome !== 'in-progress') {
-            const lead = await Lead.findById(leadId);
-            if (lead && lead.status === 'new') {
-                lead.status = 'contacted';
-                await lead.save();
-            }
-        }
-        
         await saved.populate(['lead', 'scheduledCall']);
         res.status(201).json(saved);
     } catch (error) {
