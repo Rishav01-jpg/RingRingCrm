@@ -333,17 +333,7 @@ const Leads = () => {
     try {
       const token = localStorage.getItem('token');
       
-      // Save to call history
-      await axios.post(`${config.API_URL}/api/call-history`, {
-        leadId: selectedLead._id,
-        actualStartTime: new Date().toISOString(),
-        duration: callDuration,
-        outcome: callFormData.outcome,
-        notes: callFormData.notes,
-        followUpRequired: false
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+     
 
       // Update lead status based on call outcome
       const newStatus = callFormData.outcome === 'successful' ? 'contacted' : selectedLead.status;
