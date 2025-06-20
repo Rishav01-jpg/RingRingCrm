@@ -166,7 +166,7 @@ const Dashboard = () => {
             try {
               response = await axios.get(`${baseURL}/api/leads`, { 
                 headers,
-                params: { page: 1, limit: 100 } // Get all leads
+                params: { page: 1, limit: 10000000 } // Get all leads
               });
               
               if (!response.data || !mountedRef.current) return;
@@ -222,7 +222,7 @@ const Dashboard = () => {
           case 'contacts': {
             response = await axios.get(`${baseURL}/api/contacts`, { 
               headers,
-              params: { page: 1, limit: 100 } // Get all contacts
+              params: { page: 1, limit: 10000000 } // Get all contacts
             });
             if (!response.data || !mountedRef.current) return;
 
@@ -248,7 +248,7 @@ const Dashboard = () => {
           case 'calls': {
             response = await axios.get(`${baseURL}/api/call-history`, { 
               headers,
-              params: { page: 1, limit: 100 } // Get all calls
+              params: { page: 1, limit: 10000000 } // Get all calls
             });
             if (!response.data || !mountedRef.current) return;
 
@@ -357,7 +357,7 @@ const Dashboard = () => {
         setLoading(true);
         const baseURL = config.API_URL;
         const headers = { Authorization: `Bearer ${token}` };
-        const params = { page: 1, limit: 100 }; // Get all records
+        const params = { page: 1, limit: 10000000 }; // Get all records
 
         // Fetch all data in parallel
         const [leadsRes, contactsRes, callsRes, scheduledRes] = await Promise.all([
@@ -414,7 +414,9 @@ const Dashboard = () => {
           } else {
             calls = [];
           }
-
+         // Only count actual calls
+calls = calls.filter(call => call.actualStartTime);
+console.log("Total call IDs:", calls.map(c => c._id));
           // Process scheduled calls
           let scheduled;
           if (Array.isArray(scheduledRes.data)) {
