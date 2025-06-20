@@ -11,10 +11,6 @@ const callHistorySchema = new mongoose.Schema({
         ref: 'Lead',
         required: true
     },
-    contact: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Contact'
-    },
     scheduledCall: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ScheduledCall'
