@@ -247,9 +247,25 @@ const Contacts = () => {
     }
   };
 
-  const handleCall = (phone) => {
+  const handleCall = async (contact) => {
+    const phone = contact.phone;
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       window.location.href = `tel:${phone}`;
+  
+      // Send to backend to create call history
+      try {
+        const token = localStorage.getItem('token');
+        await axios.post(`${config.API_URL}/api/call-history/initiate`, {
+          contactId: contact._id,
+          phoneNumber: contact.phone,
+          deviceInfo: navigator.userAgent
+        }, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      } catch (err) {
+        console.error('Failed to create contact call history:', err);
+      }
+  
     } else {
       setSnackbar({
         open: true,
@@ -258,6 +274,7 @@ const Contacts = () => {
       });
     }
   };
+  
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -338,7 +355,7 @@ const Contacts = () => {
                           <Tooltip title="Call">
                             <IconButton
                               color="primary"
-                              onClick={() => handleCall(contact.phone)}
+                              onClick={() => handleCall(contact)}
                               size="small"
                             >
                               <PhoneIcon />
