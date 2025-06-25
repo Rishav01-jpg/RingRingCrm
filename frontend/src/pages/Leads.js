@@ -345,38 +345,29 @@ const Leads = () => {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (currentCall?._id) {
-        await updateCallStatus(
-          currentCall._id,
-          callFormData.notes,
-          callFormData.outcome,
-          callDuration // Pass the duration in seconds
-        );
-      }
-// 🧠 THIS WILL UPDATE THE CALL HISTORY
-if (!callFormData.outcome) {
+     if (!callFormData.outcome) {
   setSnackbar({ open: true, message: 'Please select an outcome', severity: 'warning' });
+  setSavingNotes(false);
   return;
 }
-console.log("🧪 currentCall is", currentCall);
+
 if (currentCall?._id) {
   console.log("📞 Updating call-history with:", {
     callId: currentCall._id,
-    status: 'completed',
     notes: callFormData.notes,
-    outcome: callFormData.outcome
+    outcome: callFormData.outcome,
+    duration: callDuration
   });
 
   await updateCallStatus(
     currentCall._id,
-    'completed',
     callFormData.notes,
-    callFormData.outcome
+    callFormData.outcome,
+    callDuration // Pass the duration in seconds
   );
 
   console.log("✅ Call history updated");
 }
-
       setCallDialogOpen(false);
       setSelectedLead(null);
       setCallDuration(0);
