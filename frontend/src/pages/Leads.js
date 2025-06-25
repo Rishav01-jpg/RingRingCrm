@@ -345,29 +345,7 @@ const Leads = () => {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-     if (!callFormData.outcome) {
-  setSnackbar({ open: true, message: 'Please select an outcome', severity: 'warning' });
-  setSavingNotes(false);
-  return;
-}
 
-if (currentCall?._id) {
-  console.log("📞 Updating call-history with:", {
-    callId: currentCall._id,
-    notes: callFormData.notes,
-    outcome: callFormData.outcome,
-    duration: callDuration
-  });
-
-  await updateCallStatus(
-    currentCall._id,
-    callFormData.notes,
-    callFormData.outcome,
-    callDuration // Pass the duration in seconds
-  );
-
-  console.log("✅ Call history updated");
-}
       setCallDialogOpen(false);
       setSelectedLead(null);
       setCallDuration(0);
@@ -561,13 +539,14 @@ if (currentCall?._id) {
   };
 
   // Function to update call status
-  const updateCallStatus = async (callId, notes, outcome, duration) => {
+  const updateCallStatus = async (callId, status, notes, outcome) => {
     try {
       const token = localStorage.getItem('token');
       await axios.put(`${config.API_URL}/api/call-history/${callId}/status`, {
+        status,
+        endTime: new Date().toISOString(),
         outcome,
-        notes,
-        duration, // <- Add duration
+        notes
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
