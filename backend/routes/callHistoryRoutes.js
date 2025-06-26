@@ -142,7 +142,8 @@ console.log('📦 Body:', req.body);
         if (duration !== undefined) call.duration = duration;
         if (followUpRequired !== undefined) call.followUpRequired = followUpRequired;
         if (followUpDate) call.followUpDate = followUpDate;
-
+        
+        console.log("✅ Updating call:", call);
         const updated = await call.save();
         await updated.populate('lead');
 
