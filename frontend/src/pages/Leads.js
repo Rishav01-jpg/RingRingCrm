@@ -362,20 +362,21 @@ console.log("🧪 currentCall is", currentCall);
 if (currentCall?._id) {
   console.log("📞 Updating call-history with:", {
     callId: currentCall._id,
-    status: 'completed',
     notes: callFormData.notes,
-    outcome: callFormData.outcome
+    outcome: callFormData.outcome,
+    duration: callDuration
   });
 
   await updateCallStatus(
     currentCall._id,
-    'completed',
     callFormData.notes,
-    callFormData.outcome
+    callFormData.outcome,
+    callDuration
   );
 
   console.log("✅ Call history updated");
 }
+
 
       setCallDialogOpen(false);
       setSelectedLead(null);
