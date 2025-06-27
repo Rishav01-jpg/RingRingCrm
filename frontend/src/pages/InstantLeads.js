@@ -50,7 +50,7 @@ function InstantLeads() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:5000/api/instant-leads', {
+      const res = await fetch('https://ring-ring-eq46.onrender.com/api/instant-leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, paymentStatus: 'PAID' }),
