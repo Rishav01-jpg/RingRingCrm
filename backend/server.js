@@ -9,6 +9,8 @@ const contactRoutes = require('./routes/contactRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const scheduledCallRoutes = require('./routes/scheduledCallRoutes');
 const callHistoryRoutes = require('./routes/callHistoryRoutes');
+const instantLeadRoutes = require('./routes/instantLeadRoutes');
+
 require('dotenv').config();
 
 const app = express();
@@ -24,12 +26,18 @@ app.use('/api/contacts', contactRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/scheduled-calls', scheduledCallRoutes);
 app.use('/api/call-history', callHistoryRoutes);
+app.use('/api', instantLeadRoutes);
+
+
+
 
 // Database connection (using the MONGO_URI from .env)
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    console.log('MongoDB connected successfully');
+    console.log('✅ MongoDB connected successfully');
+    console.log('📂 Connected to Database:', mongoose.connection.name);
   })
+
   .catch((err) => {
     console.error('MongoDB connection error:', err);
   });
@@ -37,11 +45,11 @@ mongoose.connect(process.env.MONGO_URI)
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
- app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
+  app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'build', 'index.html'));
-});  
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+  });  
 } else {
   // Basic route for testing in development
   app.get('/', (req, res) => {
