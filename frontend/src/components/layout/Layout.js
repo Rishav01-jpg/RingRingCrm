@@ -32,6 +32,8 @@ import {
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { useAuth } from '../../context/AuthContext';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
+
 
 const drawerWidth = 240;
 
@@ -115,6 +117,7 @@ const Layout = ({ children }) => {
     { text: 'Contacts', icon: <ContactPhoneIcon />, path: '/contacts' },
     { text: 'Scheduled Calls', icon: <ScheduleIcon />, path: '/scheduled-calls' },
     { text: 'Call History', icon: <PhoneIcon />, path: '/call-history' },
+    { text: 'Instant Leads', icon: <FlashOnIcon />, path: '/instant-leads' },
   ];
 
   if (user?.isAdmin) {
