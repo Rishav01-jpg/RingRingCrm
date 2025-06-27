@@ -11,6 +11,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import Leads from './pages/Leads';
 import Contacts from './pages/Contacts';
 import ScheduledCalls from './pages/ScheduledCalls';
+import InstantLeads from './pages/InstantLeads';
 // Add import at the top
 import CallHistory from './pages/CallHistory';
 import Admin from './pages/Admin';
@@ -122,6 +123,9 @@ function App() {
     </ProtectedRoute>
   }
 />
+
+<Route path="/instant-leads" element={<InstantLeads />} />
+
           </Routes>
         </Router>
       </AuthProvider>
