@@ -12,6 +12,7 @@ const upload = multer({ dest: 'uploads/' });
 // Create a lead
 router.post('/', authMiddleware, async (req, res) => {
     try {
+        console.log("🔍 Mongoose DB Name:", mongoose.connection.name);
         const { name, email, phone, notes, status } = req.body;
         const newLead = new Lead({
             user: req.user.id,
@@ -106,6 +107,44 @@ router.delete('/:id', authMiddleware, async (req, res) => {
         res.json({ msg: 'Lead deleted' });
     } catch (err) {
         console.error(err);
+        res.status(500).json({ msg: 'Server Error' });
+    }
+});
+
+// Bulk delete leads
+router.delete('/bulk/delete', authMiddleware, async (req, res) => {
+    try {
+        const { leadIds } = req.body;
+        
+        if (!leadIds || !Array.isArray(leadIds) || leadIds.length === 0) {
+            return res.status(400).json({ msg: 'No lead IDs provided for deletion' });
+        }
+
+        // Find all leads that belong to the user
+        const leads = await Lead.find({
+            _id: { $in: leadIds },
+            user: req.user.id
+        });
+
+        // Extract IDs of leads that belong to the user
+        const authorizedLeadIds = leads.map(lead => lead._id);
+        
+        if (authorizedLeadIds.length === 0) {
+            return res.status(404).json({ msg: 'No authorized leads found for deletion' });
+        }
+
+        // Delete the authorized leads
+        const result = await Lead.deleteMany({
+            _id: { $in: authorizedLeadIds }
+        });
+
+        res.json({ 
+            msg: 'Leads deleted successfully', 
+            count: result.deletedCount,
+            deletedIds: authorizedLeadIds
+        });
+    } catch (err) {
+        console.error('Bulk delete error:', err);
         res.status(500).json({ msg: 'Server Error' });
     }
 });
