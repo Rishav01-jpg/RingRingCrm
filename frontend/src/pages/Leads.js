@@ -28,8 +28,7 @@ import {
   Tooltip,
   Stack,
   Divider,
-  Input,
-  Checkbox
+  Input
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -44,8 +43,7 @@ import {
   Cancel as CancelIcon,
   SkipNext as SkipNextIcon,
   Upload as UploadIcon,
-  Download as DownloadIcon,
-  DeleteSweep as DeleteSweepIcon
+  Download as DownloadIcon
 } from '@mui/icons-material';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
@@ -134,11 +132,6 @@ const Leads = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
-
-  // Bulk delete state
-  const [selectedLeads, setSelectedLeads] = useState([]);
-  const [bulkDeleteConfirmOpen, setBulkDeleteConfirmOpen] = useState(false);
-  const [bulkDeleteLoading, setBulkDeleteLoading] = useState(false);
 
   // Auto-calling state
   const [isAutoCalling, setIsAutoCalling] = useState(false);
@@ -268,70 +261,10 @@ const Leads = () => {
         });
         setSnackbar({ open: true, message: 'Lead deleted successfully', severity: 'success' });
         fetchLeads();
-        // Clear selection if the deleted lead was selected
-        setSelectedLeads(prev => prev.filter(leadId => leadId !== id));
       } catch (err) {
         setSnackbar({ open: true, message: 'Failed to delete lead', severity: 'error' });
         console.error('Error deleting lead:', err);
       }
-    }
-  };
-
-  // Handle bulk delete
-  const handleBulkDelete = async () => {
-    if (selectedLeads.length === 0) {
-      setSnackbar({ open: true, message: 'No leads selected for deletion', severity: 'warning' });
-      return;
-    }
-
-    setBulkDeleteLoading(true);
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.delete(`${config.API_URL}/api/leads/bulk/delete`, {
-        headers: { Authorization: `Bearer ${token}` },
-        data: { leadIds: selectedLeads }
-      });
-
-      setSnackbar({ 
-        open: true, 
-        message: `Successfully deleted ${response.data.count} leads`, 
-        severity: 'success' 
-      });
-      
-      // Clear selections and refresh leads
-      setSelectedLeads([]);
-      fetchLeads();
-      setBulkDeleteConfirmOpen(false);
-    } catch (err) {
-      setSnackbar({ 
-        open: true, 
-        message: 'Failed to delete leads: ' + (err.response?.data?.msg || err.message), 
-        severity: 'error' 
-      });
-      console.error('Error bulk deleting leads:', err);
-    } finally {
-      setBulkDeleteLoading(false);
-    }
-  };
-
-  // Handle lead selection
-  const handleSelectLead = (leadId) => {
-    setSelectedLeads(prev => {
-      if (prev.includes(leadId)) {
-        return prev.filter(id => id !== leadId);
-      } else {
-        return [...prev, leadId];
-      }
-    });
-  };
-
-  // Handle select all leads
-  const handleSelectAllLeads = (event) => {
-    if (event.target.checked) {
-      const allLeadIds = leads.map(lead => lead._id);
-      setSelectedLeads(allLeadIds);
-    } else {
-      setSelectedLeads([]);
     }
   };
 
@@ -780,15 +713,6 @@ if (currentCall?._id) {
           </Button>
           <Button
             variant="contained"
-            color="error"
-            startIcon={<DeleteSweepIcon />}
-            onClick={() => setBulkDeleteConfirmOpen(true)}
-            disabled={selectedLeads.length === 0}
-          >
-            Delete Selected ({selectedLeads.length})
-          </Button>
-          <Button
-            variant="contained"
             color="primary"
             startIcon={<AddIcon />}
             onClick={() => handleOpenDialog()}
@@ -839,13 +763,6 @@ if (currentCall?._id) {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        indeterminate={selectedLeads.length > 0 && selectedLeads.length < leads.length}
-                        checked={leads.length > 0 && selectedLeads.length === leads.length}
-                        onChange={handleSelectAllLeads}
-                      />
-                    </TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Email</TableCell>
                     <TableCell>Phone</TableCell>
@@ -855,17 +772,7 @@ if (currentCall?._id) {
                 </TableHead>
                 <TableBody>
                   {leads.map((lead) => (
-                    <TableRow 
-                      key={lead._id}
-                      selected={selectedLeads.includes(lead._id)}
-                      hover
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={selectedLeads.includes(lead._id)}
-                          onChange={() => handleSelectLead(lead._id)}
-                        />
-                      </TableCell>
+                    <TableRow key={lead._id}>
                       <TableCell>{lead.name}</TableCell>
                       <TableCell>{lead.email}</TableCell>
                       <TableCell>{lead.phone}</TableCell>
@@ -1294,36 +1201,6 @@ if (currentCall?._id) {
             ) : (
               'Import'
             )}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Bulk Delete Confirmation Dialog */}
-      <Dialog
-        open={bulkDeleteConfirmOpen}
-        onClose={() => setBulkDeleteConfirmOpen(false)}
-        aria-labelledby="bulk-delete-dialog-title"
-      >
-        <DialogTitle id="bulk-delete-dialog-title">
-          Confirm Bulk Delete
-        </DialogTitle>
-        <DialogContent>
-          <Typography>
-            Are you sure you want to delete {selectedLeads.length} selected lead{selectedLeads.length !== 1 ? 's' : ''}? This action cannot be undone.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setBulkDeleteConfirmOpen(false)} disabled={bulkDeleteLoading}>
-            Cancel
-          </Button>
-          <Button 
-            onClick={handleBulkDelete} 
-            color="error" 
-            variant="contained"
-            disabled={bulkDeleteLoading}
-            startIcon={bulkDeleteLoading ? <CircularProgress size={20} /> : <DeleteSweepIcon />}
-          >
-            {bulkDeleteLoading ? 'Deleting...' : 'Delete'}
           </Button>
         </DialogActions>
       </Dialog>
