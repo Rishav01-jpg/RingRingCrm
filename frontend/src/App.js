@@ -16,6 +16,8 @@ import InstantLeads from './pages/InstantLeads';
 import CallHistory from './pages/CallHistory';
 import Admin from './pages/Admin';
 import Signup from './components/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 
 const theme = createTheme({
@@ -52,6 +54,9 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+<Route path="/reset-password/:token" element={<ResetPassword />} />
+
             <Route
               path="/dashboard"
               element={
