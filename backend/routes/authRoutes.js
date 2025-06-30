@@ -56,7 +56,8 @@ router.post('/request-reset-password', async (req, res) => {
         await user.save();  // Save the changes to the user
 
         // Now we send the email with the reset link (token in the URL)
-        const resetLink = `http://localhost:5000/reset-password/${resetToken}`;  // Reset link with token
+        const resetLink = `https://ring-ring-1.onrender.com/reset-password/${resetToken}`;   // local dev
+ // Reset link with token
 
         // Send the email (we'll pretend we have a working email service here)
        // --- EMAIL SENDING TEMPORARILY DISABLED ---
@@ -70,7 +71,11 @@ router.post('/request-reset-password', async (req, res) => {
 console.log('Reset Link:', resetLink);
 
 
-        res.json({ msg: 'Reset link has been sent to your email' });  // Tell them the email was sent
+       res.json({
+  msg: 'Reset link generated',
+  resetLink: resetLink
+});
+ // Tell them the email was sent
     } catch (error) {
         console.error(error);
         res.status(500).json({ msg: 'Server error' });  // If something goes wrong
@@ -93,7 +98,7 @@ router.post('/reset-password/:token', async (req, res) => {
         }
 
         // Update the user's password
-        user.password = await bcrypt.hash(newPassword, 10);  // Hash the new password
+      user.password = newPassword; // ✅ let the pre('save') hook hash it  // Hash the new password
         user.resetToken = undefined;  // Remove the reset token (so they can’t use it again)
         user.resetTokenExpiration = undefined;  // Remove the expiration time
 
