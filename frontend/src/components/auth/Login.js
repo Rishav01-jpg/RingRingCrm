@@ -93,6 +93,13 @@ const Login = () => {
 >
   Don't have an account? Sign Up
 </Button>
+<Box sx={{ mt: 2, textAlign: 'center' }}>
+  <Typography variant="body2">
+    <Link to="/forgot-password" style={{ textDecoration: 'none', color: '#1976d2' }}>
+      Forgot your password?
+    </Link>
+  </Typography>
+</Box>
 
           </form>
         </Paper>
