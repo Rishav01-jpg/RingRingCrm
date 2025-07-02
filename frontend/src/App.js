@@ -57,24 +57,49 @@ const theme = createTheme({
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    return (
-      <div style={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background: 'linear-gradient(to right, #141e30, #243b55)',
-        color: '#fff',
-        fontFamily: 'Arial',
+if (loading) {
+  return (
+    <div style={{
+      height: '100vh',
+      width: '100vw',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
+      color: '#ffffff',
+      padding: '20px',
+      boxSizing: 'border-box',
+      textAlign: 'center',
+    }}>
+      <img
+        src={logo}
+        alt="Logo"
+        style={{
+          width: '120px',
+          maxWidth: '40%',
+          height: 'auto',
+          marginBottom: '24px',
+        }}
+      />
+      <h2 style={{
+        fontSize: '1.6rem',
+        fontWeight: '600',
+        marginBottom: '12px',
+        lineHeight: '1.3',
       }}>
-        <img src={logo} alt="Logo" style={{ width: 120, marginBottom: 20 }} />
-        <h1>Welcome to Ring Ring CRM</h1>
-        <p>Loading your dashboard...</p>
-      </div>
-    );
-  }
+        Welcome to Ring Ring CRM
+      </h2>
+      <p style={{
+        fontSize: '1rem',
+        opacity: 0.8,
+      }}>
+        Preparing your dashboard...
+      </p>
+    </div>
+  );
+}
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
