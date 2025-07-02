@@ -18,6 +18,8 @@ import Admin from './pages/Admin';
 import Signup from './components/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import logo from './logo.svg';
+
 
 
 const theme = createTheme({
@@ -45,7 +47,34 @@ const theme = createTheme({
   },
 });
 
-function App() {
+  function App() {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: 'linear-gradient(to right, #141e30, #243b55)',
+        color: '#fff',
+        fontFamily: 'Arial',
+      }}>
+        <img src={logo} alt="Logo" style={{ width: 120, marginBottom: 20 }} />
+        <h1>Welcome to Ring Ring CRM</h1>
+        <p>Loading your dashboard...</p>
+      </div>
+    );
+  }
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
