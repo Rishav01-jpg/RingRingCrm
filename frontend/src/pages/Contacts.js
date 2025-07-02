@@ -218,58 +218,20 @@ const Contacts = () => {
     }
   };
 
-  const handleExportCsv = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await axios.get(`${config.API_URL}/api/contacts/export-csv`, {
-      headers: { Authorization: `Bearer ${token}` },
-      responseType: 'blob',
-    });
+ const handleExportCsv = () => {
+  const token = localStorage.getItem('token');
+  const exportUrl = `${config.API_URL}/api/contacts/export-csv?token=${token}`;
 
-    const blob = new Blob([response.data], { type: 'text/csv' });
-    const fileName = `contacts-${new Date().toISOString().split('T')[0]}.csv`;
+  // Open in new tab or download in WebView
+  window.open(exportUrl, '_blank');
 
-    // Check if it's mobile
-    if (/Android|iPhone|iPad/i.test(navigator.userAgent)) {
-      try {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      } catch (mobileError) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const dataUrl = e.target.result;
-          window.open(dataUrl, '_blank');
-        };
-        reader.readAsDataURL(blob);
-      }
-    } else {
-      // Desktop fallback
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.setAttribute('download', fileName);
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    }
-
-    setSnackbar({ open: true, message: 'Contacts exported successfully', severity: 'success' });
-  } catch (err) {
-    console.error('❌ Error exporting contacts:', err);
-    setSnackbar({
-      open: true,
-      message: 'Failed to export contacts',
-      severity: 'error',
-    });
-  }
+  setSnackbar({
+    open: true,
+    message: 'Contacts export started',
+    severity: 'info'
+  });
 };
+
 
   const handleCall = (phone) => {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
