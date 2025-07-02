@@ -547,64 +547,24 @@ if (currentCall?._id) {
       setImporting(false);
     }
   };
+const handleExportCsv = () => {
+  const token = localStorage.getItem('token');
+  const url = `${config.API_URL}/api/leads/export-csv`;
 
-  const handleExportCsv = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`${config.API_URL}/api/leads/export-csv`, {
-        headers: { Authorization: `Bearer ${token}` },
-        responseType: 'blob'
-      });
+  const a = document.createElement('a');
+  a.href = `${url}?token=${token}`;
+  a.download = 'leads.csv';
+  a.rel = 'noopener';
+  a.target = '_blank';
+  a.style.display = 'none';
 
-      const blob = new Blob([response.data], { type: 'text/csv' });
-      const fileName = `leads-${new Date().toISOString().split('T')[0]}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 
-      // Check if device is mobile
-      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        // For mobile devices
-        try {
-          // Try to use the download attribute first
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = fileName;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
-        } catch (mobileError) {
-          console.error('Mobile download failed, trying alternative method:', mobileError);
-          
-          // Fallback: Open in new tab/window
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            const url = e.target.result;
-            window.open(url, '_blank');
-          };
-          reader.readAsDataURL(blob);
-        }
-      } else {
-        // For desktop devices - use the original method
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', fileName);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-      }
-      
-      setSnackbar({ open: true, message: 'Leads exported successfully', severity: 'success' });
-    } catch (err) {
-      console.error('Error exporting leads:', err);
-      setSnackbar({ 
-        open: true, 
-        message: 'Failed to export leads. Please try again or contact support.', 
-        severity: 'error' 
-      });
-    }
-  };
+  setSnackbar({ open: true, message: 'Leads export started', severity: 'success' });
+};
+
 
   // Function to initiate call tracking
   const initiateCallTracking = async (lead) => {
