@@ -1,14 +1,16 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers.authorization || req.query.token;
 
-  if (authHeader && authHeader.startsWith("Bearer ")) {
-    const token = authHeader.split(" ")[1];
+  if (authHeader) {
+    const token = authHeader.startsWith('Bearer ')
+      ? authHeader.split(' ')[1]
+      : authHeader;
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("Decoded JWT:", decoded); // <== Add this line
+      console.log("Decoded JWT:", decoded);
       req.user = decoded.user;
       console.log("authMiddleware req.user:", req.user);
       next();
