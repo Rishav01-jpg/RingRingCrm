@@ -182,7 +182,7 @@ const Leads = () => {
           search: searchTerm,
           status: statusFilter,
           page,
-          limit: 100
+          limit: 20
         }
       });
 
@@ -1079,7 +1079,7 @@ const handleExportCsv = () => {
       }
     }}
   >
-    <MenuItem value="" sx={{ fontSize: '1.4rem', padding: '16px 32px' }}>No Change</MenuItem>
+    <MenuItem value="" sx={{ fontSize: '1.4rem', padding: '16px 32px' }}></MenuItem>
     {statusOptions.map(status => (
       <MenuItem key={status} value={status} sx={{ fontSize: '1.4rem', padding: '16px 32px' }}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
