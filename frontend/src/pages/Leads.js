@@ -182,7 +182,7 @@ const Leads = () => {
           search: searchTerm,
           status: statusFilter,
           page,
-          limit: 10
+          limit: 16
         }
       });
 
