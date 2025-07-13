@@ -75,7 +75,7 @@ const Contacts = () => {
         params: {
           search: searchTerm,
           page,
-          limit: 10
+          limit: 100
         }
       });
 
