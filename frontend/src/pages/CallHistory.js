@@ -247,8 +247,6 @@ const CallHistory = () => {
                   <TableCell>Duration (min)</TableCell>
                   <TableCell>Outcome</TableCell>
                   <TableCell>Notes</TableCell>
-                  <TableCell>Follow-up Required</TableCell>
-                  <TableCell>Follow-up Date</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -282,9 +280,9 @@ const CallHistory = () => {
                       {call.outcome.charAt(0).toUpperCase() + call.outcome.slice(1)}
                     </TableCell>
                     <TableCell>{call.notes || '-'}</TableCell>
-                    <TableCell>{call.followUpRequired ? 'Yes' : 'No'}</TableCell>
+                    
                     <TableCell>
-                      {call.followUpDate ? formatDateTime(call.followUpDate) : '-'}
+                      
                     </TableCell>
                   </TableRow>
                 ))}
