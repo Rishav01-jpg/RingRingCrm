@@ -70,6 +70,19 @@ const CallHistory = () => {
     'cancelled',
     'skipped'
   ];
+// 👶 This helps include the full end date (till 11:59:59 PM)
+const formatDateRangeFilters = (filters) => {
+  const newFilters = { ...filters };
+
+  if (filters.startDate) {
+    newFilters.startDate = `${filters.startDate}T00:00:00`;
+  }
+  if (filters.endDate) {
+    newFilters.endDate = `${filters.endDate}T23:59:59`;
+  }
+
+  return newFilters;
+};
 
   const fetchCallHistory = useCallback(async () => {
     try {
@@ -77,7 +90,7 @@ const CallHistory = () => {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${config.API_URL}/api/call-history`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: filters
+        params: formatDateRangeFilters(filters)
       });
 
       setCalls(response.data);
