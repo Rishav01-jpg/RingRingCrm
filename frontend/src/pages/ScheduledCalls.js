@@ -131,7 +131,7 @@ const ScheduledCalls = () => {
       const response = await axios.get(`${config.API_URL}/api/leads`, {
         headers: { Authorization: `Bearer ${token}` },
         params: {
-          limit: 1000, // High limit to get all leads
+          limit: 100, // High limit to get all leads
           search: searchInputValue // Add search term if present
         }
       });
@@ -401,28 +401,30 @@ const ScheduledCalls = () => {
 
   // Function to get combined and formatted options
   const getFormattedOptions = () => {
-    // Use memoization to avoid unnecessary recalculations
     const validLeads = leads.filter(lead => lead && lead._id && lead.name);
     const validContacts = contacts.filter(contact => contact && contact._id && contact.name);
-    
-    // If there's a search term, filter the options
+    let options = [...validLeads, ...validContacts];
     if (searchInputValue) {
       const searchTerm = searchInputValue.toLowerCase();
-      const filteredLeads = validLeads.filter(lead => 
-        lead.name.toLowerCase().includes(searchTerm) ||
-        lead.email?.toLowerCase().includes(searchTerm) ||
-        lead.phone?.includes(searchTerm)
+      options = options.filter(option =>
+        option.name.toLowerCase().includes(searchTerm) ||
+        option.email?.toLowerCase().includes(searchTerm) ||
+        option.phone?.includes(searchTerm)
       );
-      const filteredContacts = validContacts.filter(contact => 
-        contact.name.toLowerCase().includes(searchTerm) ||
-        contact.email?.toLowerCase().includes(searchTerm) ||
-        contact.phone?.includes(searchTerm)
-      );
-      return [...filteredLeads, ...filteredContacts];
+      // Sort so exact matches or startsWith appear first
+      options.sort((a, b) => {
+        const aName = a.name.toLowerCase();
+        const bName = b.name.toLowerCase();
+        if (aName === searchTerm && bName !== searchTerm) return -1;
+        if (bName === searchTerm && aName !== searchTerm) return 1;
+        if (aName.startsWith(searchTerm) && !bName.startsWith(searchTerm)) return -1;
+        if (bName.startsWith(searchTerm) && !aName.startsWith(searchTerm)) return 1;
+        return aName.localeCompare(bName);
+      });
+    } else {
+      options.sort((a, b) => a.name.localeCompare(b.name));
     }
-    
-    // If no search term, return all options
-    return [...validLeads, ...validContacts];
+    return options;
   };
 
   return (
@@ -555,8 +557,8 @@ const ScheduledCalls = () => {
                           </Typography>
                         </TableCell>
                         <TableCell>
+                          {call.notes || ''}
                         </TableCell>
-                        <TableCell>{call.notes || ''}</TableCell>
                         <TableCell>
                           <Box display="flex" gap={1}>
                             <IconButton
@@ -619,10 +621,10 @@ const ScheduledCalls = () => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Select Lead or Contact"
+                      label="Select Lead"
                       required
                       error={!formData.leadId}
-                      helperText={!formData.leadId ? 'Please select a lead or contact' : ''}
+                      helperText={!formData.leadId ? 'Please select a lead' : ''}
                       InputProps={{
                         ...params.InputProps,
                         endAdornment: (
