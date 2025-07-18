@@ -19,6 +19,7 @@ import Signup from './components/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import logo from './logo.svg';
+import GetWebsiteForm from './pages/GetWebsiteForm';
 
 
 
@@ -184,6 +185,16 @@ if (loading) {
 />
 
 <Route path="/instant-leads" element={<InstantLeads />} />
+<Route
+  path="/get-website"
+  element={
+    <ProtectedRoute>
+      <GetWebsiteForm />
+    </ProtectedRoute>
+  }
+/>
+
+
 
           </Routes>
         </Router>
