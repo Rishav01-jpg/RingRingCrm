@@ -33,6 +33,7 @@ import {
 import { styled } from '@mui/material/styles';
 import { useAuth } from '../../context/AuthContext';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
+import { FaGlobe } from 'react-icons/fa';
 
 
 const drawerWidth = 240;
@@ -118,6 +119,7 @@ const Layout = ({ children }) => {
     { text: 'Scheduled Calls', icon: <ScheduleIcon />, path: '/scheduled-calls' },
     { text: 'Call History', icon: <PhoneIcon />, path: '/call-history' },
     { text: 'Instant Leads', icon: <FlashOnIcon />, path: '/instant-leads' },
+    { text: 'Get Your Website', icon: <FaGlobe />, path: '/get-website' },
   ];
 
   if (user?.isAdmin) {
