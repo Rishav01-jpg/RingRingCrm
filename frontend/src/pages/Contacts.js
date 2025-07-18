@@ -75,7 +75,7 @@ const Contacts = () => {
         params: {
           search: searchTerm,
           page,
-          limit: 10
+          limit: 100
         }
       });
 
@@ -218,34 +218,20 @@ const Contacts = () => {
     }
   };
 
-  const handleExportCsv = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`${config.API_URL}/api/contacts/export-csv`, {
-        headers: { Authorization: `Bearer ${token}` },
-        responseType: 'blob'
-      });
+ const handleExportCsv = () => {
+  const token = localStorage.getItem('token');
+  const exportUrl = `${config.API_URL}/api/contacts/export-csv?token=${token}`;
 
-      const blob = new Blob([response.data], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `contacts-${new Date().toISOString().split('T')[0]}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      setSnackbar({ open: true, message: 'Contacts exported successfully', severity: 'success' });
-    } catch (err) {
-      console.error('Error exporting contacts:', err);
-      setSnackbar({ 
-        open: true, 
-        message: 'Failed to export contacts', 
-        severity: 'error' 
-      });
-    }
-  };
+  // Open in new tab or download in WebView
+  window.open(exportUrl, '_blank');
+
+  setSnackbar({
+    open: true,
+    message: 'Contacts export started',
+    severity: 'info'
+  });
+};
+
 
   const handleCall = (phone) => {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {

@@ -160,7 +160,8 @@ const Leads = () => {
 
   const [callFormData, setCallFormData] = useState({
     outcome: '',
-    notes: ''
+    notes: '',
+    status:''
   });
 
   const statusOptions = ['new', 'contacted', 'qualified', 'lost', 'converted', 'in-progress'];
@@ -181,7 +182,7 @@ const Leads = () => {
           search: searchTerm,
           status: statusFilter,
           page,
-          limit: 10
+          limit: 100
         }
       });
 
@@ -403,15 +404,16 @@ const Leads = () => {
      
 
       // Update lead status based on call outcome
-      const newStatus = callFormData.outcome === 'successful' ? 'contacted' : selectedLead.status;
+     const updatedStatus = callFormData.status || selectedLead.status;
       await axios.put(`${config.API_URL}/api/leads/${selectedLead._id}`, {
-        ...selectedLead,
-        status: newStatus,
-        lastCallOutcome: callFormData.outcome,
-        lastCallNotes: callFormData.notes
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+  ...selectedLead,
+  status: updatedStatus, // ✅ NEW LINE
+  lastCallOutcome: callFormData.outcome,
+  lastCallNotes: callFormData.notes
+}, {
+  headers: { Authorization: `Bearer ${token}` }
+});
+
       if (currentCall?._id) {
         await updateCallStatus(
           currentCall._id,
@@ -454,7 +456,7 @@ if (currentCall?._id) {
       }
       
       // Reset call form data
-      setCallFormData({ outcome: '', notes: '' });
+     setCallFormData({ outcome: '', notes: '', status: '' });
       
       setSnackbar({
         open: true,
@@ -547,64 +549,24 @@ if (currentCall?._id) {
       setImporting(false);
     }
   };
+const handleExportCsv = () => {
+  const token = localStorage.getItem('token');
+  const url = `${config.API_URL}/api/leads/export-csv`;
 
-  const handleExportCsv = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`${config.API_URL}/api/leads/export-csv`, {
-        headers: { Authorization: `Bearer ${token}` },
-        responseType: 'blob'
-      });
+  const a = document.createElement('a');
+  a.href = `${url}?token=${token}`;
+  a.download = 'leads.csv';
+  a.rel = 'noopener';
+  a.target = '_blank';
+  a.style.display = 'none';
 
-      const blob = new Blob([response.data], { type: 'text/csv' });
-      const fileName = `leads-${new Date().toISOString().split('T')[0]}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 
-      // Check if device is mobile
-      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        // For mobile devices
-        try {
-          // Try to use the download attribute first
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = fileName;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(url);
-        } catch (mobileError) {
-          console.error('Mobile download failed, trying alternative method:', mobileError);
-          
-          // Fallback: Open in new tab/window
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            const url = e.target.result;
-            window.open(url, '_blank');
-          };
-          reader.readAsDataURL(blob);
-        }
-      } else {
-        // For desktop devices - use the original method
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', fileName);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-      }
-      
-      setSnackbar({ open: true, message: 'Leads exported successfully', severity: 'success' });
-    } catch (err) {
-      console.error('Error exporting leads:', err);
-      setSnackbar({ 
-        open: true, 
-        message: 'Failed to export leads. Please try again or contact support.', 
-        severity: 'error' 
-      });
-    }
-  };
+  setSnackbar({ open: true, message: 'Leads export started', severity: 'success' });
+};
+
 
   // Function to initiate call tracking
   const initiateCallTracking = async (lead) => {
@@ -1094,6 +1056,38 @@ if (currentCall?._id) {
                     <MenuItem value="other" sx={{ fontSize: '1.4rem', padding: '16px 32px' }}>Other</MenuItem>
                   </Select>
                 </FormControl>
+                <FormControl fullWidth size="large" margin="dense">
+  <InputLabel sx={{ fontSize: '1.4rem' }}>Call Status</InputLabel>
+  <Select
+    value={callFormData.status}
+    onChange={(e) => setCallFormData(prev => ({ ...prev, status: e.target.value }))}
+    label="Call Status"
+    sx={{
+      minHeight: 80,
+      fontSize: '1.6rem',
+      '& .MuiSelect-select': {
+        padding: '20px 32px',
+      },
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderWidth: '2px',
+      },
+      '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderWidth: '3px',
+      },
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderWidth: '3px',
+      }
+    }}
+  >
+    <MenuItem value="" sx={{ fontSize: '1.4rem', padding: '16px 32px' }}></MenuItem>
+    {statusOptions.map(status => (
+      <MenuItem key={status} value={status} sx={{ fontSize: '1.4rem', padding: '16px 32px' }}>
+        {status.charAt(0).toUpperCase() + status.slice(1)}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
+
                 <TextField
                   label="Call Notes"
                   multiline

@@ -150,7 +150,7 @@ function InstantLeads() {
             }}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={24} color="inherit" /> : 'Pay & Submit'}
+            {loading ? <CircularProgress size={24} color="inherit" /> : 'Submit'}
           </Button>
         </Box>
       </StyledPaper>
@@ -166,5 +166,4 @@ function InstantLeads() {
     </Container>
   );
 }
-
 export default InstantLeads;

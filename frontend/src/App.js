@@ -18,6 +18,9 @@ import Admin from './pages/Admin';
 import Signup from './components/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import logo from './logo.svg';
+import GetWebsiteForm from './pages/GetWebsiteForm';
+
 
 
 const theme = createTheme({
@@ -45,7 +48,59 @@ const theme = createTheme({
   },
 });
 
-function App() {
+  function App() {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+if (loading) {
+  return (
+    <div style={{
+      height: '100vh',
+      width: '100vw',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
+      color: '#ffffff',
+      padding: '20px',
+      boxSizing: 'border-box',
+      textAlign: 'center',
+    }}>
+      <img
+        src={logo}
+        alt="Logo"
+        style={{
+          width: '120px',
+          maxWidth: '40%',
+          height: 'auto',
+          marginBottom: '24px',
+        }}
+      />
+      <h2 style={{
+        fontSize: '1.6rem',
+        fontWeight: '600',
+        marginBottom: '12px',
+        lineHeight: '1.3',
+      }}>
+        Welcome to Ring Ring CRM
+      </h2>
+      <p style={{
+        fontSize: '1rem',
+        opacity: 0.8,
+      }}>
+        Preparing your dashboard...
+      </p>
+    </div>
+  );
+}
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -130,6 +185,16 @@ function App() {
 />
 
 <Route path="/instant-leads" element={<InstantLeads />} />
+<Route
+  path="/get-website"
+  element={
+    <ProtectedRoute>
+      <GetWebsiteForm />
+    </ProtectedRoute>
+  }
+/>
+
+
 
           </Routes>
         </Router>
