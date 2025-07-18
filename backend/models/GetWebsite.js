@@ -10,3 +10,4 @@ const getWebsiteSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('GetWebsite', getWebsiteSchema);
+
