@@ -18,7 +18,7 @@ import Admin from './pages/Admin';
 import Signup from './components/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
-import logo from './logo.svg';
+import logo from './logo.png';
 import GetWebsiteForm from './pages/GetWebsiteForm';
 
 
@@ -67,7 +67,7 @@ if (loading) {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      background: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
+      background: 'linear-gradient(135deg,rgb(8, 37, 25),rgb(19, 89, 61),)',
       color: '#ffffff',
       padding: '20px',
       boxSizing: 'border-box',
@@ -77,16 +77,16 @@ if (loading) {
         src={logo}
         alt="Logo"
         style={{
-          width: '120px',
-          maxWidth: '40%',
+          width: '500px',
+          maxWidth: '100%',
           height: 'auto',
-          marginBottom: '24px',
+          marginBottom: '10px',
         }}
       />
       <h2 style={{
         fontSize: '1.6rem',
         fontWeight: '600',
-        marginBottom: '12px',
+        marginBottom: '6px',
         lineHeight: '1.3',
       }}>
         Welcome to Ring Ring CRM
