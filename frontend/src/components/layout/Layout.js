@@ -54,8 +54,24 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
       }),
       marginLeft: 0,
     }),
-  }),
+
+    // ✅ Makes it stretch full height
+    minHeight: '100vh',
+
+    // ✅ Add gradient background
+    background: 'linear-gradient(to right,rgb(28, 106, 71),rgb(109, 196, 155))',
+
+    // ✅ Make background cover full area even if content is short
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+
+    // ✅ Responsive fix for mobile
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(2),
+    },
+  })
 );
+
 
 const AppBarStyled = styled(AppBar, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -127,7 +143,8 @@ const Layout = ({ children }) => {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
+   <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+
       <AppBarStyled position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -175,19 +192,22 @@ const Layout = ({ children }) => {
           </Menu>
         </Toolbar>
       </AppBarStyled>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
+    <Drawer
+  sx={{
+    width: drawerWidth,
+    flexShrink: 0,
+    '& .MuiDrawer-paper': {
+      width: drawerWidth,
+      boxSizing: 'border-box',
+      background: 'linear-gradient(135deg,rgb(5, 60, 35),rgb(123, 211, 170))',
+      color: 'white',
+    },
+  }}
+  variant="persistent"
+  anchor="left"
+  open={open}
+>
+
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
@@ -201,8 +221,8 @@ const Layout = ({ children }) => {
                 selected={location.pathname === item.path}
                 onClick={() => navigate(item.path)}
               >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
+               <ListItemIcon sx={{ color: 'white' }}>{item.icon}</ListItemIcon>
+               <ListItemText primary={item.text} sx={{ color: 'white' }} />
               </ListItemButton>
             </ListItem>
           ))}
