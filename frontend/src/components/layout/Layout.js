@@ -34,6 +34,9 @@ import { styled } from '@mui/material/styles';
 import { useAuth } from '../../context/AuthContext';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import { FaGlobe } from 'react-icons/fa';
+import logo from '../../logo.png';
+ 
+
 
 
 const drawerWidth = 240;
@@ -207,6 +210,20 @@ const Layout = ({ children }) => {
   anchor="left"
   open={open}
 >
+<Box
+  sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '20px 0',
+    flexDirection: 'column',
+  }}
+>
+  <img src={logo} alt="Logo" style={{ width: '90px', height: '80px', marginBottom: '10px' }} />
+  <Typography variant="h6" style={{ color: 'white' }}>
+    Ring Ring Crm
+  </Typography>
+</Box>
 
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
@@ -235,6 +252,5 @@ const Layout = ({ children }) => {
     </Box>
   );
 };
-
 
 export default Layout; 
