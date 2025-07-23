@@ -35,6 +35,7 @@ import { useAuth } from '../../context/AuthContext';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import { FaGlobe } from 'react-icons/fa';
 import logo from '../../logo.png';
+
  
 
 
@@ -102,6 +103,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 const Layout = ({ children }) => {
+  
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -211,19 +213,18 @@ const Layout = ({ children }) => {
   open={open}
 >
 <Box
-  sx={{
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '20px 0',
-    flexDirection: 'column',
-  }}
+  display="flex"
+  alignItems="center"
+  flexDirection="column"
+  p={2}
+  style={{ backgroundColor: theme.palette.primary.main }}
 >
   <img src={logo} alt="Logo" style={{ width: '90px', height: '80px', marginBottom: '10px' }} />
   <Typography variant="h6" style={{ color: 'white' }}>
-    Ring Ring Crm
+    {user ? `Hello, ${user.name}` : 'Welcome'}
   </Typography>
 </Box>
+
 
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
