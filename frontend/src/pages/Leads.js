@@ -713,14 +713,17 @@ const handleExportCsv = () => {
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h4" component="h1">
-          Leads Management
+    Leads Management
         </Typography>
         <Box display="flex" gap={2}>
+            <Box mt={2} display="flex" flexWrap="wrap" gap={1}></Box>
           <Button
             variant="contained"
             color={isAutoCalling ? "error" : "success"}
             startIcon={isAutoCalling ? <StopIcon /> : <PlayArrowIcon />}
             onClick={startAutoCalling}
+            size="large"
+            
           >
             {isAutoCalling ? "Stop Auto-Calling" : "Start Auto-Calling"}
           </Button>
@@ -729,6 +732,7 @@ const handleExportCsv = () => {
             color="secondary"
             startIcon={<UploadIcon />}
             onClick={() => setCsvDialogOpen(true)}
+            size="medium"
           >
             Import CSV
           </Button>
