@@ -63,7 +63,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     minHeight: '100vh',
 
     // ✅ Add gradient background
-    background: 'linear-gradient(to right,rgb(28, 106, 71),rgb(109, 196, 155))',
+    background: 'linear-gradient(to right,rgb(8, 58, 36),rgb(109, 196, 155))',
 
     // ✅ Make background cover full area even if content is short
     backgroundRepeat: 'no-repeat',
