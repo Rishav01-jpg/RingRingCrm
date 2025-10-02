@@ -1,14 +1,46 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import logo from '../assets/ringring.png';
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
-  const handleGetStarted = () => {
-    const token = localStorage.getItem("token");
-    navigate(token ? "/dashboard" : "/login");
-  };
+const handleGetStarted = async () => {
+  const token = localStorage.getItem("token");
+
+  // 1️⃣ Already logged in → Dashboard
+  if (token) {
+    navigate("/dashboard");
+    return;
+  }
+
+  // 2️⃣ Check if email is saved (from payment or signup)
+  const savedEmail =
+    (localStorage.getItem("paidEmail") || localStorage.getItem("email") || "").trim().toLowerCase();
+
+  // No email at all → go to payment
+  if (!savedEmail) {
+    navigate("/payment");
+    return;
+  }
+
+  try {
+    // 3️⃣ Ask backend if this email has an active subscription
+    const res = await fetch(`https://ring-ring-eq46.onrender.com/api/payments/status?email=${savedEmail}`);
+    const data = await res.json();
+
+    if (data.subscription === "active") {
+      navigate("/login"); // ✅ Paid user → login/signup
+    } else {
+      navigate("/payment"); // ❌ Not paid → payment page
+    }
+  } catch (err) {
+    console.error("Error checking subscription:", err);
+    navigate("/payment"); // fallback
+  }
+};
+
+
 
   useEffect(() => {
     document.title = "Ring Ring CRM – Smart Calling CRM";
@@ -31,19 +63,19 @@ const LandingPage = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '15px'
+          gap: '8px'
         }}>
           <img src={logo} alt="logo" style={{
-            width: '80px',
-            height: '80px',
+            width: '100px',
+            height: '100px',
             borderRadius: '50%',
              objectFit: "contain",
-                 padding: "5px",
+                 padding: "4px",
             boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
           }} />
-          Ring Ring CRM
+          Ring Ring Crm
         </h1>
-        <p style={{ fontSize: "1.3rem", marginTop: "10px" }}>
+        <p style={{ fontSize: "1.5rem", marginTop: "10px" }}>
           Upload Your Leads, Start Calling, and Grow Faster.
         </p>
         <p style={{
@@ -71,6 +103,36 @@ const LandingPage = () => {
         >
            Get Started
         </button>
+
+        <div style={{
+          marginTop: "20px",
+          display: "flex",
+          justifyContent: "center",
+          gap: "12px"
+        }}>
+          <Link to="/login" style={{
+            padding: "10px 24px",
+            borderRadius: "24px",
+            background: "#ffffff",
+            color: "#0b3d24",
+            textDecoration: "none",
+            fontWeight: 600,
+            border: "2px solid #ffffff"
+          }}>
+            Login
+          </Link>
+          <Link to="/signup" style={{
+            padding: "10px 24px",
+            borderRadius: "24px",
+            background: "transparent",
+            color: "#ffffff",
+            textDecoration: "none",
+            fontWeight: 600,
+            border: "2px solid #ffffff"
+          }}>
+            Sign Up
+          </Link>
+        </div>
       </header>
 
       {/* How It Works Section */}

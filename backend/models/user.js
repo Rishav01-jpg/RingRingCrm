@@ -16,6 +16,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    subscription: {
+  plan: { type: String, enum: ['free','half','yearly'], default: 'free' },
+  isPaid: { type: Boolean, default: false },
+  expiresAt: Date,
+  razorpayPaymentId: String
+},
+
     isAdmin: {
         type: Boolean,
         default: false

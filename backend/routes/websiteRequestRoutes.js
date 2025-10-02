@@ -25,6 +25,15 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const requests = await GetWebsite.find().sort({ createdAt: -1 });
+    res.status(200).json(requests);
+  } catch (err) {
+    console.error('Error fetching website requests:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 module.exports = router;
 
 

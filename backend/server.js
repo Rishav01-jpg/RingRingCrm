@@ -1,4 +1,4 @@
-// Import necessary libraries
+require('dotenv').config();// Import necessary libraries
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -11,12 +11,19 @@ const scheduledCallRoutes = require('./routes/scheduledCallRoutes');
 const callHistoryRoutes = require('./routes/callHistoryRoutes');
 const instantLeadRoutes = require('./routes/instantLeadRoutes');
 const websiteRequestRoutes = require('./routes/websiteRequestRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+
 
 require('dotenv').config();
 
 const app = express();
 const cors = require('cors');
 app.use(cors());
+
+// ✅ Health check (works in dev and production always)
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -29,6 +36,9 @@ app.use('/api/scheduled-calls', scheduledCallRoutes);
 app.use('/api/call-history', callHistoryRoutes);
 app.use('/api', instantLeadRoutes);
 app.use('/api/website-request', websiteRequestRoutes);
+app.use('/api/payments', paymentRoutes);
+
+
 
 
 
@@ -45,12 +55,16 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+  const path = require('path');
+  
+  // Serve React frontend from sibling folder
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
-  });  
+    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+  });
+
+ 
 } else {
   // Basic route for testing in development
   app.get('/', (req, res) => {

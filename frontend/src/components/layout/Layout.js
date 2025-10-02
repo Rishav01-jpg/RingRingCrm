@@ -35,6 +35,7 @@ import { useAuth } from '../../context/AuthContext';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import { FaGlobe } from 'react-icons/fa';
 import logo from '../../logo.png';
+import BrushIcon from '@mui/icons-material/Brush';
 
  
 
@@ -110,6 +111,8 @@ const Layout = ({ children }) => {
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [showTemplatePopup, setShowTemplatePopup] = useState(false);
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -139,8 +142,10 @@ const Layout = ({ children }) => {
     { text: 'Contacts', icon: <ContactPhoneIcon />, path: '/contacts' },
     { text: 'Scheduled Calls', icon: <ScheduleIcon />, path: '/scheduled-calls' },
     { text: 'Call History', icon: <PhoneIcon />, path: '/call-history' },
-    { text: 'Instant Leads', icon: <FlashOnIcon />, path: '/instant-leads' },
+    //{ text: 'Instant Leads', icon: <FlashOnIcon />, path: '/instant-leads' },
     { text: 'Get Your Website', icon: <FaGlobe />, path: '/get-website' },
+
+   
   ];
 
   if (user?.isAdmin) {
@@ -244,8 +249,90 @@ const Layout = ({ children }) => {
               </ListItemButton>
             </ListItem>
           ))}
+<ListItem disablePadding>
+  <ListItemButton onClick={() => setShowTemplatePopup(true)}>
+    <ListItemIcon sx={{ color: 'white' }}>
+      <BrushIcon />
+    </ListItemIcon>
+    <ListItemText primary="AI Templates" sx={{ color: 'white' }} />
+  </ListItemButton>
+</ListItem>
+
         </List>
       </Drawer>
+      {showTemplatePopup && (
+  <div
+    style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 9999,
+    }}
+  >
+    <div
+      style={{
+        background: 'linear-gradient(to right, rgb(8, 58, 36), rgb(109, 196, 155))',
+        padding: '40px',
+        borderRadius: '15px',
+        maxWidth: '500px',
+        width: '90%',
+        textAlign: 'center',
+        color: 'white',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
+        transition: 'all 0.3s ease-in-out',
+      }}
+    >
+      <h2 style={{ fontSize: '26px', marginBottom: '15px' }}>✨ AI Templates</h2>
+      <p style={{ fontSize: '18px', lineHeight: '1.6' }}>
+        You are being redirected to <strong>template.net</strong>.
+        <br />Enjoy generating beautiful templates!
+      </p>
+
+      <div style={{ marginTop: '25px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
+        <button
+          onClick={() => {
+            setShowTemplatePopup(false);
+            window.open('https://www.template.net', '_blank');
+          }}
+          style={{
+            padding: '12px 25px',
+            backgroundColor: 'white',
+            color: 'rgb(8, 58, 36)',
+            fontWeight: 'bold',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+          }}
+        >
+          🚀 Proceed
+        </button>
+        <button
+          onClick={() => setShowTemplatePopup(false)}
+          style={{
+            padding: '12px 25px',
+            backgroundColor: '#444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+          }}
+        >
+          ❌ Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
       <Main open={open}>
         <DrawerHeader />
         {children}
@@ -254,4 +341,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout; 
+export default Layout;

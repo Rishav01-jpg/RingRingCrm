@@ -9,6 +9,7 @@ const contactRoutes = require('./routes/contactRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const scheduledCallRoutes = require('./routes/scheduledCallRoutes');
 const callHistoryRoutes = require('./routes/callHistoryRoutes');
+
 require('dotenv').config();
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(cors());
 
 
 // Middleware to parse JSON bodies
+
 app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/leads', leadRoutes);
@@ -25,6 +27,7 @@ app.use('/api/contacts', contactRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/scheduled-calls', scheduledCallRoutes);
 app.use('/api/call-history', callHistoryRoutes);
+
 
 // Database connection (using the MONGO_URI from .env)
 mongoose.connect(process.env.MONGO_URI)

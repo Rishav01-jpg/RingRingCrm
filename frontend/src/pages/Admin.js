@@ -44,26 +44,30 @@ const Admin = () => {
     role: 'user',
     isAdmin: false
   });
-
-  const fetchUsers = async () => {
+  const [websiteRequests, setWebsiteRequests] = useState([]);
+  const [loadingRequests, setLoadingRequests] = useState(true);
+  const [errorRequests, setErrorRequests] = useState(null);
+  
+  const fetchWebsiteRequests = async () => {
     try {
-      setLoading(true);
+      setLoadingRequests(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`${config.API_URL}/api/admin/users`, {
+      const response = await axios.get(`${config.API_URL}/api/website-request`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setUsers(response.data);
-      setError(null);
+      setWebsiteRequests(response.data);
+      setErrorRequests(null);
     } catch (err) {
-      setError('Failed to fetch users');
-      console.error('Error fetching users:', err);
+      setErrorRequests('Failed to fetch website requests');
+      console.error('Error fetching website requests:', err);
     } finally {
-      setLoading(false);
+      setLoadingRequests(false);
     }
   };
-
+  
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(setUsers, setLoading, setError);
+    fetchWebsiteRequests();
   }, []);
 
   const handleOpenDialog = (user = null) => {
@@ -210,6 +214,50 @@ const Admin = () => {
               </CardContent>
             </Card>
           </Grid>
+          <Grid item xs={12}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" sx={{ mb: 2 }}>Website Requests</Typography>
+                {errorRequests && (
+                  <Alert severity="error" sx={{ mb: 2 }}>{errorRequests}</Alert>
+                )}
+                {loadingRequests ? (
+                  <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+                    <CircularProgress />
+                  </Box>
+                ) : (
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Name</TableCell>
+                          <TableCell>Business Type</TableCell>
+                          <TableCell>Business Name</TableCell>
+                          <TableCell>Email</TableCell>
+                          <TableCell>Phone</TableCell>
+                          <TableCell>Description</TableCell>
+                          <TableCell>Created At</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {websiteRequests.map((req) => (
+                          <TableRow key={req._id}>
+                            <TableCell>{req.name}</TableCell>
+                            <TableCell>{req.businessType}</TableCell>
+                            <TableCell>{req.businessName}</TableCell>
+                            <TableCell>{req.email}</TableCell>
+                            <TableCell>{req.phone}</TableCell>
+                            <TableCell>{req.description}</TableCell>
+                            <TableCell>{new Date(req.createdAt).toLocaleString()}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
 
         <Dialog open={openDialog} onClose={handleCloseDialog}>
@@ -284,3 +332,20 @@ const Admin = () => {
 };
 
 export default Admin;
+
+const fetchUsers = async (setUsers, setLoading, setError) => {
+  try {
+    setLoading(true);
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${config.API_URL}/api/admin/users`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setUsers(response.data);
+    setError(null);
+  } catch (err) {
+    setError('Failed to fetch users');
+    console.error('Error fetching users:', err);
+  } finally {
+    setLoading(false);
+  }
+};

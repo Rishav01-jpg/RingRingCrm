@@ -131,7 +131,7 @@ const ScheduledCalls = () => {
       const response = await axios.get(`${config.API_URL}/api/leads`, {
         headers: { Authorization: `Bearer ${token}` },
         params: {
-          limit: 100, // High limit to get all leads
+          limit: 10, // High limit to get all leads
           search: searchInputValue // Add search term if present
         }
       });
