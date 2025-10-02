@@ -54,14 +54,18 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   });
 
 // Serve static assets if in production
+
+
 if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+  // Serve React build folder
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-
+  // All unknown routes go to React index.html
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
-  });  
+    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+  });
+
+ 
 } else {
   // Basic route for testing in development
   app.get('/', (req, res) => {
