@@ -12,7 +12,7 @@ const PaymentPage = () => {
 
     try {
       // 1️⃣ Create order on backend
-      const res = await axios.post('http://192.168.1.10:5000/api/payments/create-order', { email, plan });
+      const res = await axios.post('https://ring-ring-eq46.onrender.com/api/payments/create-order', { email, plan });
       console.log('Order created:', res.data);
 
       const { order, key } = res.data;
@@ -29,7 +29,7 @@ const PaymentPage = () => {
         handler: async function (response) {
           try {
             // 3️⃣ Verify payment on backend
-            const verifyRes = await axios.post('http://192.168.1.10:5000/api/payments/verify', {
+            const verifyRes = await axios.post('https://ring-ring-eq46.onrender.com/api/payments/verify', {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
