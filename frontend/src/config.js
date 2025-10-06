@@ -1,5 +1,5 @@
 const config = {
-    API_URL: 'http://localhost:5000'
+    API_URL: 'https://ring-ring-eq46.onrender.com'
 };
 
 export default config; 
