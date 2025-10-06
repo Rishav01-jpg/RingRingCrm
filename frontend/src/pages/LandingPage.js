@@ -1,9 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import logo from '../assets/ringring.png';
+import BookDemoForm from "../components/BookDemoForm";
+import Button from '@mui/material/Button';
+import circuitBg from '../assets/circuit-board.svg';
+import rocketSvg from '../assets/rocket.svg';
+import graphSvg from '../assets/graph.svg';
+
+// ----------------------------------------------------------------------
+// 1. CUSTOM HOOK FOR MEDIA QUERY (Handles responsiveness for inline styles)
+// ----------------------------------------------------------------------
+const useMediaQuery = (query) => {
+  const [matches, setMatches] = useState(false); // Default to false on first render
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const listener = () => setMatches(media.matches);
+    
+    // Set initial state
+    setMatches(media.matches);
+
+    // Listen for changes
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, [query]);
+
+  return matches;
+};
+// ----------------------------------------------------------------------
+
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [demoFormOpen, setDemoFormOpen] = useState(false);
+  // Check for desktop/tablet size (e.g., wider than 768px)
+  const isDesktop = useMediaQuery('(min-width: 768px)'); 
 
 const handleGetStarted = async () => {
   const token = localStorage.getItem("token");
@@ -40,24 +71,42 @@ const handleGetStarted = async () => {
   }
 };
 
-
-
   useEffect(() => {
     document.title = "Ring Ring CRM – Smart Calling CRM";
   }, []);
 
+  // Define column styles using the desktop flag
+  const columnStyle = {
+    flex: isDesktop ? "1" : "0 0 100%", // Take full width on mobile
+    minWidth: isDesktop ? "250px" : "100%",
+    textAlign: isDesktop ? "center" : "center",
+    padding: "0 20px",
+    marginBottom: isDesktop ? "0" : "30px", // Add space between sections on mobile
+  };
+
+
   return (
     <div
       style={{
-        background: "linear-gradient(135deg,rgb(11, 61, 36) 0%,rgb(52, 130, 91) 100%)",
+        background: "#0b3d24",
+        backgroundImage: `url(${circuitBg})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "repeat",
         minHeight: "100vh",
         color: "white",
         fontFamily: "'Segoe UI', sans-serif",
         padding: "20px",
+        position: "relative",
+        overflow: "hidden"
       }}
     >
       {/* Header Section */}
-      <header style={{ textAlign: "center", padding: "60px 20px 30px" }}>
+      <header style={{ 
+        textAlign: "center", 
+        padding: "30px 20px 30px",
+        position: "relative",
+        zIndex: 2
+      }}>
         <h1 style={{
           fontSize: "3rem",
           display: 'flex',
@@ -69,8 +118,8 @@ const handleGetStarted = async () => {
             width: '100px',
             height: '100px',
             borderRadius: '50%',
-             objectFit: "contain",
-                 padding: "4px",
+            objectFit: "contain",
+            padding: "4px",
             boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
           }} />
           Ring Ring Crm
@@ -84,54 +133,130 @@ const handleGetStarted = async () => {
           marginTop: "10px",
           fontWeight: 'bold'
         }}>
-          🎁 Free for First 100 Users
+          🎁Introductory price available for first 100 sign-ups
         </p>
-        <button
-          onClick={handleGetStarted}
-          style={{
-            marginTop: "30px",
-            padding: "15px 40px",
-            fontSize: "1.1rem",
-            borderRadius: "30px",
-            background: "#000",
-            color: "#00ff7f",
-            border: "2px solid #00ff7f",
-            cursor: "pointer",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
-            transition: "all 0.3s ease",
-          }}
-        >
-           Get Started
-        </button>
-
+        
+        {/* Three-column layout for main content */}
         <div style={{
-          marginTop: "20px",
           display: "flex",
-          justifyContent: "center",
-          gap: "12px"
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "40px",
+          flexWrap: "wrap",
+          // FIX: Change layout direction on mobile to ensure stacking order
+          flexDirection: isDesktop ? 'row' : 'column', 
         }}>
-          <Link to="/login" style={{
-            padding: "10px 24px",
-            borderRadius: "24px",
-            background: "#ffffff",
-            color: "#0b3d24",
-            textDecoration: "none",
-            fontWeight: 600,
-            border: "2px solid #ffffff"
+          {/* Left column - Rocket and Accelerate */}
+          <div style={{
+            ...columnStyle,
+            // FIX: Set order 2 on mobile to push this below the buttons
+            order: isDesktop ? 1 : 2, 
           }}>
-            Login
-          </Link>
-          <Link to="/signup" style={{
-            padding: "10px 24px",
-            borderRadius: "24px",
-            background: "transparent",
-            color: "#ffffff",
-            textDecoration: "none",
-            fontWeight: 600,
-            border: "2px solid #ffffff"
+            <img src={rocketSvg} alt="Rocket" style={{ width: "150px", height: "150px" }} />
+            <h3 style={{ fontSize: "1.5rem", marginTop: "20px", textTransform: "uppercase" }}>
+              Accelerate Your Outreach
+            </h3>
+            <p style={{ fontSize: "1rem", lineHeight: "1.6" }}>
+              Eliminate manual dialing and instantly log every call and outcome.
+              Focus 100% on the conversation.
+            </p>
+          </div>
+          
+          {/* Middle column - Buttons (This is what you want on top!) */}
+          <div style={{
+            flex: isDesktop ? "1" : "0 0 100%",
+            minWidth: isDesktop ? "300px" : "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "0 20px",
+            // FIX: Set order 1 on mobile to ensure this is the first item
+            order: 1, 
           }}>
-            Sign Up
-          </Link>
+            <button
+              onClick={handleGetStarted}
+              style={{
+                marginBottom: "20px",
+                padding: "15px 40px",
+                fontSize: "1.1rem",
+                borderRadius: "30px",
+                background: "#000",
+                color: "#00ff7f",
+                border: "2px solid #00ff7f",
+                cursor: "pointer",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
+                transition: "all 0.3s ease",
+                width: "200px"
+              }}
+            >
+              Get Started
+            </button>
+            
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "12px",
+              marginBottom: "20px"
+            }}>
+              <Link to="/login" style={{
+                padding: "10px 24px",
+                borderRadius: "24px",
+                background: "#ffffff",
+                color: "#0b3d24",
+                textDecoration: "none",
+                fontWeight: 600,
+                border: "2px solid #ffffff"
+              }}>
+                Login
+              </Link>
+              <Link to="/signup" style={{
+                padding: "10px 24px",
+                borderRadius: "24px",
+                background: "transparent",
+                color: "#ffffff",
+                textDecoration: "none",
+                fontWeight: 600,
+                border: "2px solid #ffffff"
+              }}>
+                Sign Up
+              </Link>
+            </div>
+            
+            <Button
+              onClick={() => setDemoFormOpen(true)}
+              style={{
+                padding: "10px 24px",
+                borderRadius: "24px",
+                background: "#00ff7f",
+                color: "#0b3d24",
+                textDecoration: "none",
+                fontWeight: 600,
+                border: "none",
+                cursor: "pointer",
+                width: "180px",
+                textTransform: "uppercase"
+              }}
+            >
+              Book Live Demo
+            </Button>
+          </div>
+          
+          {/* Right column - Graph and Optimize */}
+          <div style={{
+            ...columnStyle,
+            // FIX: Set order 3 on mobile to push this below the buttons and the other side content
+            order: isDesktop ? 3 : 3, 
+          }}>
+            <img src={graphSvg} alt="Graph" style={{ width: "150px", height: "150px" }} />
+            <h3 style={{ fontSize: "1.5rem", marginTop: "20px", textTransform: "uppercase" }}>
+              Optimize For Success
+            </h3>
+            <p style={{ fontSize: "1rem", lineHeight: "1.6" }}>
+              Connect with more prospects per hour and close deals faster. See
+              immediate ROI on your lead lists.
+            </p>
+          </div>
         </div>
       </header>
 
@@ -247,6 +372,9 @@ const handleGetStarted = async () => {
       }}>
         &copy; {new Date().getFullYear()} Ring Ring CRM – Built for Smart Calling.
       </footer>
+      
+      {/* Book Demo Form Dialog */}
+      <BookDemoForm open={demoFormOpen} onClose={() => setDemoFormOpen(false)} />
     </div>
   );
 };

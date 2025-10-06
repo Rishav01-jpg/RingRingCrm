@@ -12,6 +12,7 @@ const callHistoryRoutes = require('./routes/callHistoryRoutes');
 const instantLeadRoutes = require('./routes/instantLeadRoutes');
 const websiteRequestRoutes = require('./routes/websiteRequestRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const demoRoutes = require('./routes/demoRoutes');
 
 
 require('dotenv').config();
@@ -37,6 +38,7 @@ app.use('/api/call-history', callHistoryRoutes);
 app.use('/api', instantLeadRoutes);
 app.use('/api/website-request', websiteRequestRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/demo', demoRoutes);
 
 
 
@@ -54,18 +56,14 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   });
 
 // Serve static assets if in production
-
-
 if (process.env.NODE_ENV === 'production') {
-  // Serve React build folder
-  app.use(express.static(path.join(__dirname, '../frontend/build')));
+  // Set static folder
+  app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
-  // All unknown routes go to React index.html
+
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
-  });
-
- 
+    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+  });  
 } else {
   // Basic route for testing in development
   app.get('/', (req, res) => {
