@@ -34,7 +34,7 @@ const BookDemoForm = ({ open, onClose }) => {
     setError('');
     
     try {
-      const response = await axios.post('http://localhost:5000/api/demo/book', formData);
+      const response = await axios.post('https://ring-ring-eq46.onrender.com/api/demo/book', formData);
       
       if (response.data.success) {
         setSuccess(true);
