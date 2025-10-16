@@ -123,5 +123,26 @@ router.post('/initiate', authMiddleware, async (req, res) => {
         });
     }
 });
+// Update call status, outcome, and notes
+router.put('/:id/status', authMiddleware, async (req, res) => {
+    try {
+        const { status, outcome, notes } = req.body;
+        const call = await CallHistory.findById(req.params.id);
+
+        if (!call) return res.status(404).json({ message: 'Call not found' });
+
+        // Update only the provided fields
+        if (status) call.status = status;
+        if (outcome) call.outcome = outcome;
+        if (notes) call.notes = notes;
+
+        const updatedCall = await call.save();
+        await updatedCall.populate(['lead', 'scheduledCall']);
+        res.json(updatedCall);
+    } catch (error) {
+        console.error('Error updating call:', error);
+        res.status(500).json({ message: 'Could not update call', error: error.message });
+    }
+});
 
 module.exports = router;
