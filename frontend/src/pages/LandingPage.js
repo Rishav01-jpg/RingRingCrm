@@ -375,6 +375,61 @@ const handleGetStarted = async () => {
       
       {/* Book Demo Form Dialog */}
       <BookDemoForm open={demoFormOpen} onClose={() => setDemoFormOpen(false)} />
+      {/* Contact Section */}
+<section
+  style={{
+    backgroundColor: "#f9fafc",
+    padding: "60px 20px",
+    textAlign: "center",
+  }}
+>
+  <h2
+    style={{
+      fontSize: "2.2rem",
+      fontWeight: "bold",
+      color: "#000407ff",
+      marginBottom: "10px",
+    }}
+  >
+    Ring Ring CRM
+  </h2>
+  <p style={{ color: "#555", fontSize: "1.1rem", marginBottom: "30px" }}>
+    We’d love to hear from you! Reach out using any of the options below.
+  </p>
+
+  <div
+    style={{
+      maxWidth: "600px",
+      margin: "0 auto",
+      textAlign: "left",
+      background: "#0b3d24",
+      padding: "30px",
+      borderRadius: "12px",
+      boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+    }}
+  >
+    <div style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
+      <span style={{ color: "#1976d2", marginRight: "10px" }}>📍</span>
+      <p style={{ margin: 0 }}>burmamines, jamshedpur,831007, India</p>
+    </div>
+
+    <div style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
+      <span style={{ color: "#1976d2", marginRight: "10px" }}>📞</span>
+      <p style={{ margin: 0 }}>+91 8210690050</p>
+    </div>
+
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <span style={{ color: "#1976d2", marginRight: "10px" }}>✉️</span>
+      <a
+        href="mailto:ringringcrm@gmail.com"
+        style={{ textDecoration: "none", color: "#1976d2" }}
+      >
+        support@ringringcrm.com
+      </a>
+    </div>
+  </div>
+</section>
+
     </div>
   );
 };
