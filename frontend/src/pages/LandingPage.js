@@ -422,6 +422,7 @@ const handleGetStarted = async () => {
 </div>
 
       {/* Footer */}
+      
       <footer style={{
         textAlign: "center",
         marginTop: "50px",
