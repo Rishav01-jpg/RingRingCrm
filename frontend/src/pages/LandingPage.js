@@ -345,33 +345,7 @@ const handleGetStarted = async () => {
 
 
 
-<div style={{ textAlign: "center", marginTop: "40px" }}>
-  <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>Follow Us</h2>
-  <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
-    <a href="https://facebook.com" target="_blank" rel="noreferrer">
-      <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" width="30" height="30" />
-    </a>
-    <a href="https://instagram.com" target="_blank" rel="noreferrer">
-      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="30" height="30" />
-    </a>
-    <a href="https://twitter.com" target="_blank" rel="noreferrer">
-      <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" width="30" height="30" />
-    </a>
-    <a href="https://linkedin.com" target="_blank" rel="noreferrer">
-      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" width="30" height="30" />
-    </a>
-  </div>
-</div>
 
-      {/* Footer */}
-      <footer style={{
-        textAlign: "center",
-        marginTop: "50px",
-        fontSize: "0.9rem",
-        opacity: 0.6
-      }}>
-        &copy; {new Date().getFullYear()} Ring Ring CRM – Built for Smart Calling.
-      </footer>
       
       {/* Book Demo Form Dialog */}
       <BookDemoForm open={demoFormOpen} onClose={() => setDemoFormOpen(false)} />
@@ -429,8 +403,35 @@ const handleGetStarted = async () => {
     </div>
   </div>
 </section>
+<div style={{ textAlign: "center", marginTop: "40px" }}>
+  <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>Follow Us</h2>
+  <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
+    <a href="https://facebook.com" target="_blank" rel="noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" width="30" height="30" />
+    </a>
+    <a href="https://instagram.com" target="_blank" rel="noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="30" height="30" />
+    </a>
+    <a href="https://twitter.com" target="_blank" rel="noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" width="30" height="30" />
+    </a>
+    <a href="https://linkedin.com" target="_blank" rel="noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" width="30" height="30" />
+    </a>
+  </div>
+</div>
 
+      {/* Footer */}
+      <footer style={{
+        textAlign: "center",
+        marginTop: "50px",
+        fontSize: "0.9rem",
+        opacity: 0.6
+      }}>
+        &copy; {new Date().getFullYear()} Ring Ring CRM – Built for Smart Calling.
+      </footer>
     </div>
+    
   );
 };
 
