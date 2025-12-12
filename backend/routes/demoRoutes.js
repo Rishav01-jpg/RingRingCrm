@@ -40,8 +40,10 @@ router.post("/book", async (req, res) => {
     });
 
     // 🕒 Schedule reminder email (10:10 AM same day)
-    const reminderTime = new Date();
-    reminderTime.setHours(19, 25, 0, 0);
+   // Schedule reminder email for demo day at 11:00 AM
+const reminderTime = new Date(tomorrow); // <-- Use demo date (tomorrow)
+reminderTime.setHours(11, 0, 0, 0);       // <-- Set exact time 11:00 AM
+
     const currentTime = new Date();
     const timeUntilReminder = reminderTime.getTime() - currentTime.getTime();
 
