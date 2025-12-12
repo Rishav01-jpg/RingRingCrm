@@ -33,7 +33,7 @@ router.post("/book", async (req, res) => {
 
     // ✅ Send confirmation email
     await resend.emails.send({
-      from: "Ring Ring CRM <onboarding@resend.dev>", // sender name updated
+      from: "Ring Ring CRM <no-reply@ringringcrm.com>", // sender name updated
       to: email,
       subject: "✅ Demo Booked Successfully",
       html: `<p>Hi ${name},</p><p>Your demo is booked for tomorrow at 12:00 PM.</p>`,
@@ -49,7 +49,7 @@ router.post("/book", async (req, res) => {
       setTimeout(async () => {
         try {
           await resend.emails.send({
-            from: "Ring Ring CRM <onboarding@resend.dev>", // sender name updated
+            from: "Ring Ring CRM <no-reply@ringringcrm.com>", // sender name updated
             to: email,
             subject: "📢 Reminder: Live Demo Today at 12:00 PM",
             html: `<p>Hi ${name},</p><p>Your live demo starts today at 12:00 PM.</p>
