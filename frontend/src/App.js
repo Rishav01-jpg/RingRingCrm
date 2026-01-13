@@ -22,7 +22,7 @@ import logo from './logo.png';
 import GetWebsiteForm from './pages/GetWebsiteForm';
 import LandingPage from './pages/LandingPage';
 import PaymentPage from './pages/PaymentPage';
-
+import CustomCrmDemo from "./pages/CustomCrmDemo";
 
 const theme = createTheme({
   palette: {
@@ -108,7 +108,8 @@ if (loading) {
       <AuthProvider>
         <Router>
           <Routes>
-<Route path="/" element={<LandingPage />} />          
+<Route path="/" element={<LandingPage />} />  
+    <Route path="/custom-crm-demo" element={<CustomCrmDemo />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
