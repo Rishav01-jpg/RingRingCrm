@@ -13,7 +13,7 @@ const instantLeadRoutes = require('./routes/instantLeadRoutes');
 const websiteRequestRoutes = require('./routes/websiteRequestRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const demoRoutes = require('./routes/demoRoutes');
-
+const customCrmRoutes = require("./routes/customCrmRoutes");
 
 require('dotenv').config();
 
@@ -39,7 +39,8 @@ app.use('/api', instantLeadRoutes);
 app.use('/api/website-request', websiteRequestRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/demo', demoRoutes);
-app.use("/customcrm", require("./routes/customcrm"));
+app.use("/api/customcrm", customCrmRoutes);
+
 
 
 
