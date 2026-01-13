@@ -13,7 +13,7 @@ const instantLeadRoutes = require('./routes/instantLeadRoutes');
 const websiteRequestRoutes = require('./routes/websiteRequestRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const demoRoutes = require('./routes/demoRoutes');
-const customCrmRoutes = require("./routes/customCrmRoutes");
+const customCrmRoutes = require("./routes/customcrm");
 
 require('dotenv').config();
 
