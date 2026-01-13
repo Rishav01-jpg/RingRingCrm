@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.crm-demo-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6fb1fc, #4364f7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: url("https://res.cloudinary.com/djatdycpx/image/upload/v1768206860/6012933_hehrvn.jpg")
+    no-repeat center center/cover;
+}
+
+.crm-demo-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border-radius: 16px;
+  padding: 32px;
+  color: white;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.crm-demo-card h2 {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 24px;
+}
+
+.crm-demo-card input,
+.crm-demo-card select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.crm-demo-card button {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  color: #4364f7;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.crm-demo-card button:hover {
+  background: #e6ebff;
+}
+
+.message {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .crm-demo-card {
+    padding: 24px;
+  }
+}
