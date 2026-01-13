@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const moment = require("moment-timezone");
 
 const CustomCRM = require("../models/customcrm");
 const sendCustomCrmEmail = require("../utils/sendCustomCrmEmail");
 
-// POST /customcrm/register
+// POST /api/customcrm/register
 router.post("/register", async (req, res) => {
   try {
     const { name, email, phone, company, crmType } = req.body;
@@ -14,14 +13,18 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Required fields missing" });
     }
 
-    // Tomorrow 12:00 PM IST
-    const demoDateTime = moment
-      .tz("Asia/Kolkata")
-      .add(1, "day")
-      .set({ hour: 12, minute: 0, second: 0 })
-      .toDate();
+    // ✅ Tomorrow 12:00 PM IST (NO moment-timezone)
+    const now = new Date();
+    const demoDateTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() + 1,
+      12,
+      0,
+      0
+    );
 
-    // Temporary Zoom link (replace later)
+    // Temporary Zoom link
     const zoomLink = "https://zoom.us/j/1234567890";
 
     const demo = await CustomCRM.create({
