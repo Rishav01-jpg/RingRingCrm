@@ -28,7 +28,7 @@ export default function CustomCrmDemo() {
 
     try {
       await axios.post(
-        "https://ringringcrm.com/customcrm/register",
+        "https://ring-ring-eq46.onrender.com/customcrm/register",
         form,
         {
           headers: {
