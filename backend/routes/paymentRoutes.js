@@ -14,7 +14,7 @@ const razorpay = new Razorpay({
 // helper to calculate plan price
 function getAmountForPlan(plan) {
   if (plan === 'half') return 2 * 100;   // 2999 INR → 299900 paise
-  if (plan === 'yearly') return 4999 * 100; // 4999 INR → 499900 paise
+  if (plan === 'yearly') return 49999 * 100; // 4999 INR → 499900 paise
   throw new Error('Invalid plan');
 }
 
